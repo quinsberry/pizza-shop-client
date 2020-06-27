@@ -1,6 +1,8 @@
 import React from 'react'
 import cn from 'classnames'
 
+import './Button.scss'
+
 type Props = {
   onClick?: () => void
   className?: string

@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Selectors.scss'
+
 type Props = {
   types: Array<number>
   sizes: Array<number>

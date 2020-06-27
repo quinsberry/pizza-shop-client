@@ -2,6 +2,8 @@ import React from 'react'
 
 import Selectors from '../Selectors/Selectors'
 
+import './PizzaBlock.scss'
+
 import { TPizza } from '../../types/types'
 
 type Props = {

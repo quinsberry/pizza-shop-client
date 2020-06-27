@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Categories.scss'
+
 type Props = {
   items: Array<string>
 }

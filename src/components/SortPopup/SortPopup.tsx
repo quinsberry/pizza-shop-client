@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './SortPopup.scss'
+
 type Props = {
   items: Array<string>
 }
