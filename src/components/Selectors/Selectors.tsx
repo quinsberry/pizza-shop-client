@@ -1,4 +1,5 @@
 import React from 'react'
+import cn from 'classnames'
 
 import './Selectors.scss'
 
@@ -13,24 +14,15 @@ const Selectors: React.FC<Props> = ({ types, sizes }) => {
     diameters: [26, 30, 40],
   })
 
-  const MinActiveType = (arr: Array<number>) => {
-    let i = 0
-    while (!arr.includes(i)) {
-      i++
-    }
-    return i
-  }
+  const [activeType, setActiveType] = React.useState(types[0])
+  const [activeSizes, setActiveSizes] = React.useState(sizes[0])
 
   const handleSelect = (item: string = 'size', value: number) => {
     if (item === 'type') {
       return setActiveType(value)
     }
-
     return setActiveSizes(value)
   }
-
-  const [activeType, setActiveType] = React.useState(MinActiveType(types))
-  const [activeSizes, setActiveSizes] = React.useState(sizes[0])
 
   return (
     <div className="pizza-block__selector">
@@ -38,7 +30,7 @@ const Selectors: React.FC<Props> = ({ types, sizes }) => {
         {constants.thickness.map((item, idx) => (
           <li
             key={`${idx}-${item}`}
-            className={activeType === idx ? 'active' : types.includes(idx) ? '' : 'disabled'}
+            className={cn({ active: activeType === idx, disabled: !types.includes(idx) })}
             onClick={() => handleSelect('type', idx)}>
             {item}
           </li>
@@ -48,7 +40,7 @@ const Selectors: React.FC<Props> = ({ types, sizes }) => {
         {constants.diameters.map((item, idx) => (
           <li
             key={`${idx}-${item}`}
-            className={activeSizes === item ? 'active' : sizes.includes(item) ? '' : 'disabled'}
+            className={cn({ active: activeSizes === item, disabled: !sizes.includes(item) })}
             onClick={() => handleSelect('size', item)}>
             {item} cm.
           </li>
