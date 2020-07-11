@@ -2,13 +2,17 @@ import React from 'react'
 
 import './SortPopup.scss'
 
+import { TSortPopupItem } from '../../types/types'
+
 type Props = {
-  items: Array<string>
+  items: Array<TSortPopupItem>
+  sortBy: string
+
+  setSortBy: (payload: string) => void
 }
 
-const SortPopup: React.FC<Props> = ({ items }) => {
+const SortPopup: React.FC<Props> = ({ items, sortBy, setSortBy }) => {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [selected, setSelected] = React.useState('popularity')
 
   const sortRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
 
@@ -30,7 +34,7 @@ const SortPopup: React.FC<Props> = ({ items }) => {
   }
 
   const handleSelect = (type: string) => {
-    setSelected(type)
+    setSortBy(type)
     setIsOpen(false)
   }
 
@@ -50,18 +54,18 @@ const SortPopup: React.FC<Props> = ({ items }) => {
           />
         </svg>
         <b>Sort by:</b>
-        <span onClick={togglePopup}>{selected}</span>
+        <span onClick={togglePopup}>{sortBy}</span>
       </div>
       {isOpen && (
         <div className="sort__popup">
           <ul>
             {items &&
-              items.map((item, idx) => (
+              items.map((obj, idx) => (
                 <li
-                  key={`${idx}-${item}`}
-                  className={selected === item ? 'active' : ''}
-                  onClick={() => handleSelect(item)}>
-                  {item}
+                  key={`${idx}-${obj.type}`}
+                  className={sortBy === obj.name ? 'active' : ''}
+                  onClick={() => handleSelect(obj.name)}>
+                  {obj.name}
                 </li>
               ))}
           </ul>

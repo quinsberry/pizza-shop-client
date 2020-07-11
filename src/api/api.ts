@@ -4,17 +4,20 @@ import { domainUrl } from './../consts/config'
 
 import { TPizza } from '../types/types'
 
-type TGetPizzasResp = {
-  pizzas: Array<TPizza>
+type TServerResp<T = []> = {
+  success: boolean
+  data: T | []
+  errors: []
 }
 
-export const getPizzas = async () => {
+export const fetchingPizzas = async () => {
   try {
-    const res = await axios.get<TGetPizzasResp>(`${domainUrl}/db.json`)
+    const res = await axios.get<TServerResp<Array<TPizza>>>(`${domainUrl}/api/pizzas`)
     if (res.data) {
       return res.data
     }
   } catch (err) {
     console.log(err)
+    return err
   }
 }

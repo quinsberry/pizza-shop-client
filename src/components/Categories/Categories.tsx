@@ -4,27 +4,28 @@ import './Categories.scss'
 
 type Props = {
   items: Array<string>
+  category: string
+
+  setCategory: (payload: string) => void
 }
 
-const Categories: React.FC<Props> = ({ items }) => {
-  const [active, setActive] = React.useState<null | number>(null)
-
-  const handleClick = (idx: number | null) => {
-    setActive(idx)
+const Categories: React.FC<Props> = ({ items, category, setCategory }) => {
+  const handleClick = (type: string) => {
+    setCategory(type)
   }
 
   return (
     <div className="categories">
       <ul>
-        <li onClick={() => handleClick(null)} className={active === null ? 'active' : ''}>
+        <li onClick={() => handleClick('All')} className={category === 'All' ? 'active' : ''}>
           All
         </li>
         {items &&
           items.map((item, idx) => (
             <li
               key={`${idx}-${item}`}
-              className={active === idx ? 'active' : ''}
-              onClick={() => handleClick(idx)}>
+              className={category === item ? 'active' : ''}
+              onClick={() => handleClick(item)}>
               {item}
             </li>
           ))}

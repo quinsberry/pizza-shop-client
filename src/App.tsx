@@ -1,18 +1,23 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { connect } from 'react-redux'
+
+import { getPizzas } from './redux/reducers/pizzas'
 
 import { Header } from './components'
 import { Home, Cart, Error } from './pages'
-import { getPizzas } from './api/api'
+import { fetchingPizzas } from './api/api'
 
-import { TPizza } from './types/types'
+import { TPizza, TAppState } from './types/types'
 
-const App = () => {
-  const [pizzas, setPizzas] = React.useState<Array<TPizza> | undefined>([])
+type Props = {
+  getPizzas: () => void
+}
 
+const App: React.FC<Props> = ({ getPizzas }) => {
   React.useEffect(() => {
-    getPizzas().then((res) => setPizzas(res?.pizzas))
+    getPizzas()
   }, [])
 
   return (
@@ -28,7 +33,7 @@ const App = () => {
       <Header />
       <div className="content">
         <Switch>
-          <Route path="/" render={() => <Home pizzas={pizzas} />} exact />
+          <Route path="/" render={() => <Home />} exact />
           <Route path="/cart" component={Cart} />
           <Route path="/404" component={Error} />
           <Redirect to="/404" />
@@ -38,4 +43,8 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = (state: TAppState) => ({})
+
+export default connect(mapStateToProps, {
+  getPizzas,
+})(App)

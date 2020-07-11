@@ -1,15 +1,29 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
+import { connect } from 'react-redux'
 
 import { Categories, SortPopup, PizzaBlock } from '../components'
+import { pizzasSorting, pizzasCategories } from '../consts/filters'
 
-import { TPizza } from '../types/types'
+import { actions } from '../redux/reducers/filters'
 
-type Props = {
+import { TPizza, TAppState } from '../types/types'
+
+type TMapState = {
   pizzas: Array<TPizza> | undefined
+  sortBy: string
+  category: string
 }
 
-const Home: React.FC<Props> = ({ pizzas }) => {
+type TMapDispatch = {
+  setSortBy: (payload: string) => void
+  setCategory: (payload: string) => void
+}
+
+type Props = TMapState & TMapDispatch
+
+const Home: React.FC<Props> = ({ pizzas, sortBy, setSortBy, category, setCategory }) => {
+  const filterCategory = () => {}
   return (
     <div className="container">
       <Helmet>
@@ -17,15 +31,30 @@ const Home: React.FC<Props> = ({ pizzas }) => {
       </Helmet>
 
       <div className="content__top">
-        <Categories items={['Meat', 'Vegetarian', 'Grill', 'Spicy', 'Compact']} />
-        <SortPopup items={['popularity', 'price', 'alphabet']} />
+        <Categories items={pizzasCategories} category={category} setCategory={setCategory} />
+        <SortPopup items={pizzasSorting} sortBy={sortBy} setSortBy={setSortBy} />
       </div>
       <h2 className="content__title">All pizzas</h2>
       <div className="content__items">
-        {pizzas && pizzas.map((pizza) => <PizzaBlock key={pizza.id} pizza={pizza} />)}
+        {pizzas &&
+          pizzas.map((pizza) => {
+            if (category !== 'All') {
+              return category === pizza.category && <PizzaBlock key={pizza._id} pizza={pizza} />
+            }
+            return <PizzaBlock key={pizza._id} pizza={pizza} />
+          })}
       </div>
     </div>
   )
 }
 
-export default Home
+const mapStateToProps = (state: TAppState): TMapState => ({
+  pizzas: state.pizzas.items,
+  sortBy: state.filters.sortBy,
+  category: state.filters.category,
+})
+
+export default connect<TMapState, TMapDispatch, {}, TAppState>(mapStateToProps, {
+  setSortBy: actions.setSortBy,
+  setCategory: actions.setCategory,
+})(Home)
