@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 import './Categories.scss'
 
@@ -10,8 +11,9 @@ type Props = {
 }
 
 const Categories: React.FC<Props> = ({ items, category, setCategory }) => {
+  const dispatch = useDispatch()
   const handleClick = (type: string) => {
-    setCategory(type)
+    dispatch(setCategory(type))
   }
 
   return (

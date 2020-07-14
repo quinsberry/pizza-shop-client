@@ -39,6 +39,19 @@ export const actions = {
   setLoading: (payload: boolean) => ({ type: 'pizzas/SET_LOADING', payload } as const),
   setErrors: (payload: TPizzaErrors) => ({ type: 'pizzas/SET_ERRORS', payload } as const),
 }
+// export class actions {
+//          private readonly dispatch: Dispatch<TActions>
+//          constructor(dispatch: Dispatch<TActions>) {
+//            this.dispatch = dispatch
+//          }
+
+//          setPizzas = (fetchedPizzas: Array<TPizza>) =>
+//            this.dispatch({ type: 'pizzas/SET_PIZZAS', fetchedPizzas } as const)
+//          setLoading = (payload: boolean) =>
+//            this.dispatch({ type: 'pizzas/SET_LOADING', payload } as const)
+//          setErrors = (payload: TPizzaErrors) =>
+//            this.dispatch({ type: 'pizzas/SET_ERRORS', payload } as const)
+//        }
 
 type TThunk = TBaseThunk<TActions>
 

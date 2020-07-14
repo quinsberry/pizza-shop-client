@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 
 import './SortPopup.scss'
 
@@ -12,6 +13,7 @@ type Props = {
 }
 
 const SortPopup: React.FC<Props> = ({ items, sortBy, setSortBy }) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = React.useState(false)
 
   const sortRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
@@ -34,7 +36,7 @@ const SortPopup: React.FC<Props> = ({ items, sortBy, setSortBy }) => {
   }
 
   const handleSelect = (type: string) => {
-    setSortBy(type)
+    dispatch(setSortBy(type))
     setIsOpen(false)
   }
 

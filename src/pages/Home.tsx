@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { Categories, SortPopup, PizzaBlock } from '../components'
 import { pizzasSorting, pizzasCategories } from '../consts/filters'
@@ -15,14 +15,20 @@ type TMapState = {
   category: string
 }
 
-type TMapDispatch = {
-  setSortBy: (payload: string) => void
-  setCategory: (payload: string) => void
-}
+// type TMapDispatch = {
+//   setSortBy: (payload: string) => void
+//   setCategory: (payload: string) => void
+// }
 
-type Props = TMapState & TMapDispatch
+const Home: React.FC = () => {
+  const { setSortBy, setCategory } = actions
 
-const Home: React.FC<Props> = ({ pizzas, sortBy, setSortBy, category, setCategory }) => {
+  const { pizzas, sortBy, category } = useSelector<TAppState, TMapState>((state) => ({
+    pizzas: state.pizzas.items,
+    sortBy: state.filters.sortBy,
+    category: state.filters.category,
+  }))
+
   const filterCategory = () => {}
   return (
     <div className="container">
@@ -48,13 +54,4 @@ const Home: React.FC<Props> = ({ pizzas, sortBy, setSortBy, category, setCategor
   )
 }
 
-const mapStateToProps = (state: TAppState): TMapState => ({
-  pizzas: state.pizzas.items,
-  sortBy: state.filters.sortBy,
-  category: state.filters.category,
-})
-
-export default connect<TMapState, TMapDispatch, {}, TAppState>(mapStateToProps, {
-  setSortBy: actions.setSortBy,
-  setCategory: actions.setCategory,
-})(Home)
+export default Home

@@ -1,23 +1,22 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { getPizzas } from './redux/reducers/pizzas'
 
 import { Header } from './components'
 import { Home, Cart, Error } from './pages'
-import { fetchingPizzas } from './api/api'
 
 import { TPizza, TAppState } from './types/types'
 
-type Props = {
-  getPizzas: () => void
-}
+type Props = {}
 
-const App: React.FC<Props> = ({ getPizzas }) => {
+const App: React.FC<Props> = () => {
+  const dispatch = useDispatch()
+
   React.useEffect(() => {
-    getPizzas()
+    dispatch(getPizzas())
   }, [])
 
   return (
@@ -43,8 +42,4 @@ const App: React.FC<Props> = ({ getPizzas }) => {
   )
 }
 
-const mapStateToProps = (state: TAppState) => ({})
-
-export default connect(mapStateToProps, {
-  getPizzas,
-})(App)
+export default App
