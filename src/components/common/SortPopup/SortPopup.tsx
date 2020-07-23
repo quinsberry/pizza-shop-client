@@ -1,9 +1,8 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
 import './SortPopup.scss'
 
-import { TSortPopupItem } from '../../types/types'
+import { TSortPopupItem } from '../../../types/types'
 
 type Props = {
   items: Array<TSortPopupItem>
@@ -13,7 +12,6 @@ type Props = {
 }
 
 const SortPopup: React.FC<Props> = ({ items, sortBy, setSortBy }) => {
-  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = React.useState(false)
 
   const sortRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
@@ -36,7 +34,7 @@ const SortPopup: React.FC<Props> = ({ items, sortBy, setSortBy }) => {
   }
 
   const handleSelect = (type: string) => {
-    dispatch(setSortBy(type))
+    setSortBy(type)
     setIsOpen(false)
   }
 
@@ -77,4 +75,4 @@ const SortPopup: React.FC<Props> = ({ items, sortBy, setSortBy }) => {
   )
 }
 
-export default SortPopup
+export default React.memo(SortPopup)

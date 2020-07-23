@@ -6,6 +6,7 @@ type TInitialState = typeof initialState
 const initialState = {
   items: [] as Array<TPizza>,
   isLoading: false,
+  isLoaded: false,
   errors: [] as TPizzaErrors,
 }
 
@@ -39,31 +40,18 @@ export const actions = {
   setLoading: (payload: boolean) => ({ type: 'pizzas/SET_LOADING', payload } as const),
   setErrors: (payload: TPizzaErrors) => ({ type: 'pizzas/SET_ERRORS', payload } as const),
 }
-// export class actions {
-//          private readonly dispatch: Dispatch<TActions>
-//          constructor(dispatch: Dispatch<TActions>) {
-//            this.dispatch = dispatch
-//          }
-
-//          setPizzas = (fetchedPizzas: Array<TPizza>) =>
-//            this.dispatch({ type: 'pizzas/SET_PIZZAS', fetchedPizzas } as const)
-//          setLoading = (payload: boolean) =>
-//            this.dispatch({ type: 'pizzas/SET_LOADING', payload } as const)
-//          setErrors = (payload: TPizzaErrors) =>
-//            this.dispatch({ type: 'pizzas/SET_ERRORS', payload } as const)
-//        }
 
 type TThunk = TBaseThunk<TActions>
 
-export const getPizzas = (): TThunk => {
+export const getPizzas = (category: string | null, sortBy: string): TThunk => {
   return async (dispatch) => {
     dispatch(actions.setLoading(true))
-    const res = await fetchingPizzas()
+    const res = await fetchingPizzas(category, sortBy)
     if (res.success) {
       dispatch(actions.setPizzas(res.data))
       dispatch(actions.setLoading(false))
     } else if (!res.success) {
-      dispatch(actions.setErrors(res.errors))
+      dispatch(actions.setErrors(res.message))
       dispatch(actions.setLoading(false))
     }
   }

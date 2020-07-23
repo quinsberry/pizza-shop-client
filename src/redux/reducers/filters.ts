@@ -3,7 +3,7 @@ import { TInferActions, TBaseThunk } from '../../types/types'
 type TInitialState = typeof initialState
 
 const initialState = {
-  category: 'All',
+  category: null as null | string,
   sortBy: 'Popularity',
 }
 
@@ -28,7 +28,7 @@ type TActions = TInferActions<typeof actions>
 
 export const actions = {
   setSortBy: (payload: string) => ({ type: 'filters/SET_SORT_BY', payload } as const),
-  setCategory: (payload: string) => ({ type: 'filters/SET_CATEGORY', payload } as const),
+  setCategory: (payload: string | null) => ({ type: 'filters/SET_CATEGORY', payload } as const),
 }
 
 type TThunk = TBaseThunk<TActions>

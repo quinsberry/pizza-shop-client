@@ -1,6 +1,7 @@
 import React from 'react'
 
-import Selectors from '../Selectors/Selectors'
+import { PizzaSelectors } from '../'
+import LoadingBlock from './LoadingBlock/LoadingBlock'
 
 import './PizzaBlock.scss'
 
@@ -8,16 +9,21 @@ import { TPizza } from '../../types/types'
 
 type Props = {
   pizza: TPizza
+  isLoading: boolean
 }
 
-const PizzaBlock: React.FC<Props> = ({ pizza }) => {
+const PizzaBlock: React.FC<Props> = ({ pizza, isLoading }) => {
   const { imageUrl, name, types, sizes, price, category, rating } = pizza
+
+  if (isLoading) {
+    return <LoadingBlock />
+  }
 
   return (
     <div className="pizza-block">
       <img className="pizza-block__image" src={imageUrl} alt={`${name} pizza`} />
       <h4 className="pizza-block__title">{name}</h4>
-      <Selectors types={types} sizes={sizes} />
+      <PizzaSelectors types={types} sizes={sizes} />
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">from {price}$</div>
         <div className="button button--outline button--add">

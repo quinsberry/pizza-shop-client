@@ -9,8 +9,9 @@ type TServerResp<T = []> = {
   data: T | []
   errors: []
 }
-
-export const fetchingPizzas = async () => {
+// main req GET 'http://localhost:3000/api/pizzas/:category/:sort
+// main req GET 'http://localhost:3000/api/pizzas/all/popularity
+export const fetchingPizzas = async (category: string | null, sortBy: string) => {
   try {
     const res = await axios.get<TServerResp<Array<TPizza>>>(`${domainUrl}/api/pizzas`)
     if (res.data) {

@@ -1,24 +1,11 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { useDispatch } from 'react-redux'
-
-import { getPizzas } from './redux/reducers/pizzas'
 
 import { Header } from './components'
 import { Home, Cart, Error } from './pages'
 
-import { TPizza, TAppState } from './types/types'
-
-type Props = {}
-
-const App: React.FC<Props> = () => {
-  const dispatch = useDispatch()
-
-  React.useEffect(() => {
-    dispatch(getPizzas())
-  }, [])
-
+const App: React.FC = () => {
   return (
     <div className="wrapper">
       <Helmet defaultTitle="Pizza Shop" titleTemplate="%s | Pizza Shop">
@@ -32,7 +19,7 @@ const App: React.FC<Props> = () => {
       <Header />
       <div className="content">
         <Switch>
-          <Route path="/" render={() => <Home />} exact />
+          <Route path="/" component={Home} exact />
           <Route path="/cart" component={Cart} />
           <Route path="/404" component={Error} />
           <Redirect to="/404" />

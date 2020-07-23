@@ -1,25 +1,23 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
 import './Categories.scss'
 
 type Props = {
   items: Array<string>
-  category: string
+  category: string | null
 
-  setCategory: (payload: string) => void
+  setCategory: (payload: string | null) => void
 }
 
 const Categories: React.FC<Props> = ({ items, category, setCategory }) => {
-  const dispatch = useDispatch()
-  const handleClick = (type: string) => {
-    dispatch(setCategory(type))
+  const handleClick = (type: string | null) => {
+    setCategory(type)
   }
 
   return (
     <div className="categories">
       <ul>
-        <li onClick={() => handleClick('All')} className={category === 'All' ? 'active' : ''}>
+        <li onClick={() => handleClick(null)} className={!category ? 'active' : ''}>
           All
         </li>
         {items &&
@@ -36,4 +34,4 @@ const Categories: React.FC<Props> = ({ items, category, setCategory }) => {
   )
 }
 
-export default Categories
+export default React.memo(Categories)

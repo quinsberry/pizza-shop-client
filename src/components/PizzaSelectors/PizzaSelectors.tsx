@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 
-import './Selectors.scss'
+import './PizzaSelectors.scss'
 
 type Props = {
   types: Array<number>
