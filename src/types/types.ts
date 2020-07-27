@@ -30,7 +30,7 @@ export type TSortPopupItem = {
 
 // -------------------------------------
 
-export type TPizzaErrors = {}
+export type TPizzaErrors = string | null
 
 export type TPizza = {
   _id: string

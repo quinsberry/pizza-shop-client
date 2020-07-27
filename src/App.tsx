@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import { Header } from './components'
-import { Home, Cart, Error } from './pages'
+import { Home, Cart } from './pages'
 
 const App: React.FC = () => {
   return (
@@ -21,8 +21,7 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/cart" component={Cart} />
-          <Route path="/404" component={Error} />
-          <Redirect to="/404" />
+          <Redirect to="/" />
         </Switch>
       </div>
     </div>

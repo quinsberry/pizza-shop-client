@@ -7,7 +7,7 @@ const initialState = {
   items: [] as Array<TPizza>,
   isLoading: false,
   isLoaded: false,
-  errors: [] as TPizzaErrors,
+  errors: null as TPizzaErrors,
 }
 
 export default (state = initialState, action: TActions): TInitialState => {

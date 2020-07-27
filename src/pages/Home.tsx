@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Categories, SortPopup } from '../components/common'
-import { PizzaBlock } from '../components'
+import { PizzaBlock, Error } from '../components'
 
 import { pizzasSorting, pizzasCategories } from '../consts/filters'
 
@@ -18,19 +18,23 @@ type TMapState = {
   isLoaded: boolean
   sortBy: string
   category: string | null
+  errors: string | null
 }
 
 const Home: React.FC = () => {
   const { setSortBy, setCategory } = actions
   const dispatch = useDispatch()
 
-  const { pizzas, isLoading, sortBy, category } = useSelector<TAppState, TMapState>((state) => ({
-    pizzas: state.pizzas.items,
-    isLoading: state.pizzas.isLoading,
-    isLoaded: state.pizzas.isLoaded,
-    sortBy: state.filters.sortBy,
-    category: state.filters.category,
-  }))
+  const { pizzas, isLoading, errors, sortBy, category } = useSelector<TAppState, TMapState>(
+    (state) => ({
+      pizzas: state.pizzas.items,
+      isLoading: state.pizzas.isLoading,
+      isLoaded: state.pizzas.isLoaded,
+      errors: state.pizzas.errors,
+      sortBy: state.filters.sortBy,
+      category: state.filters.category,
+    }),
+  )
 
   React.useEffect(() => {
     dispatch(getPizzas(category, sortBy))
@@ -60,11 +64,15 @@ const Home: React.FC = () => {
         <SortPopup items={pizzasSorting} sortBy={sortBy} setSortBy={handleAction.setSort} />
       </div>
       <h2 className="content__title">All pizzas</h2>
-      <div className="content__items">
-        {pizzas?.map((pizza) => {
-          return <PizzaBlock key={pizza._id} isLoading={isLoading} pizza={pizza} />
-        })}
-      </div>
+      {errors ? (
+        <Error text={errors} title={errors} />
+      ) : (
+        <div className="content__items">
+          {pizzas?.map((pizza) => {
+            return <PizzaBlock key={pizza._id} isLoading={isLoading} pizza={pizza} />
+          })}
+        </div>
+      )}
     </div>
   )
 }

@@ -1,0 +1,9 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  &__text {
+    font-size: 30px;
+    font-weight: 300;
+  }
+}

@@ -6,6 +6,9 @@ This is a client side of a website to order some pizzas. </br>
 
 ## Description
 
+[Link to server side source code](https://github.com/quinsberry/pizza-shop-server)
+</br>
+
 </br>
 Technologies: React + Redux, typescript </br>
 Libraries: axios, classnames, react-helmet, react-content-loader
