@@ -2,31 +2,37 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { Categories, SortPopup } from '../components/common'
-import { PizzaBlock, Error } from '../components'
-import LoadingBlock from '../components/PizzaBlock/LoadingBlock/LoadingBlock'
+import { Categories, SortPopup } from '../../components/common'
+import { PizzaBlock, Error } from '../../components'
+import LoadingBlock from '../../components/PizzaBlock/LoadingBlock/LoadingBlock'
 
-import { pizzasSorting, pizzasCategories } from '../consts/filters'
+import { pizzasSorting, pizzasCategories } from '../../consts/filters'
 
-import { getPizzas } from '../redux/reducers/pizzas'
-import { actions } from '../redux/reducers/filters'
+import { getPizzas } from '../../redux/reducers/pizzas'
+import { actions as filterActions } from '../../redux/reducers/filters'
+import { actions as cartActions } from '../../redux/reducers/cart'
 
-import { TPizza, TAppState } from '../types/types'
+import { TPizza, TAppState, TCartPizza, TCartItems } from '../../types/types'
 
 type TMapState = {
   pizzas: Array<TPizza> | undefined
   isLoading: boolean
   isInitialized: boolean
+  errors: string | null
+
   sortBy: string
   category: string | null
-  errors: string | null
+
+  cartItems: TCartItems
 }
 
 const Home: React.FC = () => {
-  const { setSortBy, setCategory } = actions
+  const { setSortBy, setCategory } = filterActions
+  const { addPizzaToCart } = cartActions
+
   const dispatch = useDispatch()
 
-  const { pizzas, isLoading, isInitialized, errors, sortBy, category } = useSelector<
+  const { pizzas, isLoading, isInitialized, errors, sortBy, category, cartItems } = useSelector<
     TAppState,
     TMapState
   >((state) => ({
@@ -34,8 +40,11 @@ const Home: React.FC = () => {
     isLoading: state.pizzas.isLoading,
     isInitialized: state.pizzas.isInitialized,
     errors: state.pizzas.errors,
+
     sortBy: state.filters.sortBy,
     category: state.filters.category,
+
+    cartItems: state.cart.items,
   }))
 
   React.useEffect(() => {
@@ -49,10 +58,13 @@ const Home: React.FC = () => {
     setCategory: React.useCallback((type: string | null) => {
       dispatch(setCategory(type))
     }, []),
+    addPizza: React.useCallback((obj: TCartPizza) => {
+      dispatch(addPizzaToCart(obj))
+    }, []),
   }
 
   return (
-    <div className="container">
+    <div className="container main">
       <Helmet>
         <meta name="description" content="List with pizzas for order" />
       </Helmet>
@@ -70,9 +82,17 @@ const Home: React.FC = () => {
         <Error text={errors} title={errors} />
       ) : (
         <div className="content__items">
-          {!isInitialized && [...Array(10)].map((el) => <LoadingBlock />)}
+          {!isInitialized && [...Array(10)].map((el, idx) => <LoadingBlock key={idx} />)}
           {pizzas?.map((pizza) => {
-            return <PizzaBlock key={pizza._id} isLoading={isLoading} pizza={pizza} />
+            return (
+              <PizzaBlock
+                key={pizza._id}
+                isLoading={isLoading}
+                pizza={pizza}
+                addPizzaToCart={handleAction.addPizza}
+                alreadyAdded={cartItems[pizza._id]?.length}
+              />
+            )
           })}
         </div>
       )}

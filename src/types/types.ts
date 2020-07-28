@@ -38,7 +38,20 @@ export type TPizza = {
   name: string
   types: Array<number>
   sizes: Array<number>
-  price: string
+  price: number
   category: string
   rating: string
+}
+
+export type TCartPizza = {
+  _id: string
+  imageUrl: string
+  name: string
+  type: string
+  size: number
+  price: number
+}
+
+export type TCartItems = {
+  [key: string]: Array<TCartPizza>
 }

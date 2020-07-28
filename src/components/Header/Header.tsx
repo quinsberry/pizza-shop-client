@@ -1,12 +1,25 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import { Button } from '../common'
 
 import './Header.scss'
 import pizzaLogoSvg from '../../assets/img/pizza-logo.svg'
 
+import { TAppState } from '../../types/types'
+
+type TMapState = {
+  totalPrice: number | string
+  totalItems: number
+}
+
 const Header = () => {
+  const { totalPrice, totalItems } = useSelector<TAppState, TMapState>((state) => ({
+    totalPrice: state.cart.totalPrice,
+    totalItems: state.cart.totalItems,
+  }))
+
   return (
     <div className="header">
       <div className="container">
@@ -22,7 +35,7 @@ const Header = () => {
         <div className="header__cart">
           <Link to="/cart">
             <Button className="button--cart">
-              <span>520 $</span>
+              <span>{totalPrice} $</span>
               <div className="button__delimiter"></div>
               <svg
                 width="18"
@@ -52,7 +65,7 @@ const Header = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span>3</span>
+              <span>{totalItems}</span>
             </Button>
           </Link>
         </div>

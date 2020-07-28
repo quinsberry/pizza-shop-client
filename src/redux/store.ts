@@ -1,13 +1,14 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
-import { pizzas, filters } from './reducers'
+import { pizzas, filters, cart } from './reducers'
 
 export type TRootReducer = typeof rootReducer
 
 const rootReducer = combineReducers({
   pizzas,
   filters,
+  cart,
 })
 
 // @ts-ignore

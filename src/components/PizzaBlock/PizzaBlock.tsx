@@ -1,32 +1,65 @@
 import React from 'react'
 
 import { PizzaSelectors } from '../'
+import { Button } from '../common'
 import LoadingBlock from './LoadingBlock/LoadingBlock'
+import { pizzasSelectors } from '../../consts/filters'
 
 import './PizzaBlock.scss'
 
-import { TPizza } from '../../types/types'
+import { TPizza, TCartPizza } from '../../types/types'
 
 type Props = {
   pizza: TPizza
   isLoading: boolean
+  alreadyAdded: number | undefined
+
+  addPizzaToCart: (obj: TCartPizza) => void
 }
 
-const PizzaBlock: React.FC<Props> = ({ pizza, isLoading }) => {
-  const { imageUrl, name, types, sizes, price, category, rating } = pizza
+const PizzaBlock: React.FC<Props> = ({ pizza, isLoading, addPizzaToCart, alreadyAdded }) => {
+  const { _id, imageUrl, name, types, sizes, price, category, rating } = pizza
+
+  const [activeType, setActiveType] = React.useState(0)
+  const [activeSize, setActiveSize] = React.useState(0)
+
+  React.useEffect(() => {
+    setActiveSize(sizes[0])
+    setActiveType(types[0])
+  }, [])
 
   if (isLoading) {
     return <LoadingBlock />
+  }
+
+  const handleAddPizza = () => {
+    const obj = {
+      _id,
+      imageUrl,
+      name,
+      price,
+      type: pizzasSelectors.thickness[activeType],
+      size: activeSize,
+    }
+    addPizzaToCart(obj)
   }
 
   return (
     <div className="pizza-block">
       <img className="pizza-block__image" src={imageUrl} alt={`${name} pizza`} />
       <h4 className="pizza-block__title">{name}</h4>
-      <PizzaSelectors types={types} sizes={sizes} />
+      <PizzaSelectors
+        types={types}
+        sizes={sizes}
+        activeType={activeType}
+        activeSize={activeSize}
+        setActiveType={setActiveType}
+        setActiveSize={setActiveSize}
+        availableSelectorConstants={pizzasSelectors}
+      />
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">from {price}$</div>
-        <div className="button button--outline button--add">
+        <Button add outline onClick={handleAddPizza}>
           <svg
             width="12"
             height="12"
@@ -39,8 +72,8 @@ const PizzaBlock: React.FC<Props> = ({ pizza, isLoading }) => {
             />
           </svg>
           <span>Add</span>
-          <i>2</i>
-        </div>
+          {alreadyAdded && <i>{alreadyAdded}</i>}
+        </Button>
       </div>
     </div>
   )
