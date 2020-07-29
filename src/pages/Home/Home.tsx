@@ -7,6 +7,7 @@ import { PizzaBlock, Error } from '../../components'
 import LoadingBlock from '../../components/PizzaBlock/LoadingBlock/LoadingBlock'
 
 import { pizzasSorting, pizzasCategories } from '../../consts/filters'
+import { domainUrl } from '../../consts/config'
 
 import { getPizzas } from '../../redux/reducers/pizzas'
 import { actions as filterActions } from '../../redux/reducers/filters'
@@ -66,7 +67,33 @@ const Home: React.FC = () => {
   return (
     <div className="container main">
       <Helmet>
+        <title>Home</title>
         <meta name="description" content="List with pizzas for order" />
+
+        <meta property="og:title" content="Pizza shop home page" />
+        <meta property="og:description" content="Choose the pizza's you want" />
+        <meta property="og:site_name" content="Pizza shop" />
+        <meta property="og:url" content={`${domainUrl}`} />
+        <meta property="og:type" content={`${domainUrl}:home`} />
+
+        <meta
+          property="og:image"
+          content="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/ec29465e-606b-4a04-a03e-da3940d37e0e.jpg"
+        />
+        <meta
+          property="og:image:secure_url"
+          content="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/ec29465e-606b-4a04-a03e-da3940d37e0e.jpg"
+        />
+        <meta property="og:image:width" content="584" />
+
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:title" content="Pizza shop, choose your pizza!" />
+        <meta property="twitter:description" content="Choose the pizza's you want" />
+        <meta
+          property="twitter:image"
+          content="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/ec29465e-606b-4a04-a03e-da3940d37e0e.jpg"
+        />
+        <meta property="twitter:url" content={`${domainUrl}`} />
       </Helmet>
 
       <div className="content__top">

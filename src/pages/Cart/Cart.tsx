@@ -4,18 +4,56 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { actions } from '../../redux/reducers/cart'
+import { domainUrl } from '../../consts/config'
 
 import { Button } from '../../components/common'
 
 import './Cart.scss'
 
+import { TAppState } from '../../types/types'
+
+type TMapState = {
+  items: any
+  totalPrice: number | string
+  totalItems: number
+}
+
 const Cart = () => {
+  const { items, totalPrice, totalItems } = useSelector<TAppState, TMapState>((state) => ({
+    items: state.cart.items,
+    totalPrice: state.cart.totalPrice,
+    totalItems: state.cart.totalItems,
+  }))
   return (
     <>
       <Helmet>
-        <title>My Cart</title>
+        <title>{totalItems ? `${totalItems} pizzas` : 'Empty cart'}</title>
+        <meta name="description" content="The cart with pizza's order" />
 
-        <meta name="description" content="The cart with my order" />
+        <meta property="og:title" content="Pizza's order" />
+        <meta property="og:description" content="Check and order the pizza's you chose" />
+        <meta property="og:site_name" content="Pizza shop" />
+        <meta property="og:url" content={`${domainUrl}`} />
+        <meta property="og:type" content={`${domainUrl}:cart`} />
+
+        <meta
+          property="og:image"
+          content="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/ec29465e-606b-4a04-a03e-da3940d37e0e.jpg"
+        />
+        <meta
+          property="og:image:secure_url"
+          content="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/ec29465e-606b-4a04-a03e-da3940d37e0e.jpg"
+        />
+        <meta property="og:image:width" content="584" />
+
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:title" content="Your Cart" />
+        <meta property="twitter:description" content="Check and order the pizza's you chose" />
+        <meta
+          property="twitter:image"
+          content="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/ec29465e-606b-4a04-a03e-da3940d37e0e.jpg"
+        />
+        <meta property="twitter:url" content={`${domainUrl}`} />
       </Helmet>
       <div className="container cart container--cart">
         <div className="cart">

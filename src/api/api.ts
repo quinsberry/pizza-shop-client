@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { domainUrl } from './../consts/config'
+import { apiUrl } from './../consts/config'
 
 import { TPizza } from '../types/types'
 
@@ -19,7 +19,7 @@ export const fetchingPizzas = async (category: string | null, sortBy: string) =>
       category && sortBy ? '&' : ''
     }${querySortBy}`
 
-    const res = await axios.get<TServerResp<Array<TPizza>>>(`${domainUrl}/api/pizzas${queries}`)
+    const res = await axios.get<TServerResp<Array<TPizza>>>(`${apiUrl}/api/pizzas${queries}`)
     if (res.data) {
       return res.data
     }
