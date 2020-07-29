@@ -53,5 +53,10 @@ export type TCartPizza = {
 }
 
 export type TCartItems = {
-  [key: string]: Array<TCartPizza>
+  [key: string]: TCartItemValue
+}
+
+export type TCartItemValue = {
+  itemsTotalPrice: string
+  items: Array<TCartPizza>
 }

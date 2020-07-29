@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import { apiUrl } from './../consts/config'
-
 import { TPizza } from '../types/types'
 
 type TServerResp<T = []> = {
@@ -19,7 +17,7 @@ export const fetchingPizzas = async (category: string | null, sortBy: string) =>
       category && sortBy ? '&' : ''
     }${querySortBy}`
 
-    const res = await axios.get<TServerResp<Array<TPizza>>>(`${apiUrl}/api/pizzas${queries}`)
+    const res = await axios.get<TServerResp<Array<TPizza>>>(`/pizzas${queries}`)
     if (res.data) {
       return res.data
     }

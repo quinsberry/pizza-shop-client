@@ -11,4 +11,4 @@ This is a client side of a website to order some pizzas. </br>
 
 </br>
 Technologies: React + Redux, typescript </br>
-Libraries: axios, classnames, react-helmet, react-content-loader
+Libraries: axios, classnames, react-helmet, react-content-loader, sweetalert2

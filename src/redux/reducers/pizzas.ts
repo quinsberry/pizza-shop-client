@@ -60,6 +60,7 @@ export const getPizzas = (category: string | null, sortBy: string): TThunk => {
     }
 
     if (res.success) {
+      dispatch(actions.setErrors(null))
       dispatch(actions.setPizzas(res.data))
       dispatch(actions.setLoading(false))
     } else if (!res.success) {

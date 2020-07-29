@@ -117,7 +117,7 @@ const Home: React.FC = () => {
                 isLoading={isLoading}
                 pizza={pizza}
                 addPizzaToCart={handleAction.addPizza}
-                alreadyAdded={cartItems[pizza._id]?.length}
+                alreadyAdded={cartItems[pizza._id]?.items.length}
               />
             )
           })}

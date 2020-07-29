@@ -1,4 +1,11 @@
-import { TInferActions, TBaseThunk, TCartPizza, TCartItems } from '../../types/types'
+import { get } from '../../utils/helpers'
+import {
+  TInferActions,
+  TBaseThunk,
+  TCartPizza,
+  TCartItems,
+  TCartItemValue,
+} from '../../types/types'
 
 type TInitialState = typeof initialState
 
@@ -8,34 +15,85 @@ const initialState = {
   totalItems: 0,
 }
 
+const getItemTotalPrice = (arr: Array<TCartPizza>) =>
+  arr.reduce((init, obj) => init + Number(obj.price), 0)
+
 export default (state = initialState, action: TActions): TInitialState => {
   switch (action.type) {
     case 'cart/ADD_PIZZA_TO_CART': {
-      const newItems = {
+      const currentPizzaItems = !state.items[action.payload._id]
+        ? [action.payload]
+        : [...state.items[action.payload._id].items, action.payload]
+      const newItems: TCartItems = {
         ...state.items,
-        [action.payload._id]: !state.items[action.payload._id]
-          ? [action.payload]
-          : [...state.items[action.payload._id], action.payload],
+        [action.payload._id]: {
+          items: currentPizzaItems,
+          itemsTotalPrice: getItemTotalPrice(currentPizzaItems).toFixed(2),
+        },
       }
-      const unitedNewItemsArr = [].concat.apply([], Object.values(newItems)) as Array<TCartPizza>
-      const totalPrice = unitedNewItemsArr.reduce((init, obj) => obj.price + init, 0)
+
+      const totalItems = get(newItems, 'items.length')
+      const totalPrice = get(newItems, 'itemsTotalPrice')
       return {
         ...state,
         items: newItems,
-        totalItems: unitedNewItemsArr.length,
+        totalItems: totalItems,
         totalPrice: totalPrice.toFixed(2),
       }
     }
-    case 'cart/SET_TOTAL_PRICE':
+    case 'cart/REMOVE_CART_ITEM': {
+      const newItems = JSON.parse(JSON.stringify(state.items))
+      const newTotalPrice = +state.totalPrice - +newItems[action.payload].itemsTotalPrice
+      const newTotalItem = state.totalItems - newItems[action.payload].items.length
+      delete newItems[action.payload]
       return {
         ...state,
-        totalPrice: action.payload,
+        items: newItems,
+        totalPrice: newTotalPrice ? newTotalPrice.toFixed(2) : 0,
+        totalItems: newTotalItem,
       }
-    case 'cart/SET_PIZZAS_IN_CART_COUNT':
+    }
+    case 'cart/CLEAR_CART':
       return {
-        ...state,
-        totalItems: action.payload,
+        items: {},
+        totalPrice: 0,
+        totalItems: 0,
       }
+    case 'cart/INCREASE_ITEM_COUNT': {
+      const currentItem = state.items[action.payload]
+      const currentItemPrice = currentItem?.items[0].price
+      const newItems = [...state.items[action.payload].items, state.items[action.payload].items[0]]
+
+      return {
+        items: {
+          ...state.items,
+          [action.payload]: {
+            items: newItems,
+            itemsTotalPrice: getItemTotalPrice(newItems).toFixed(2),
+          },
+        },
+        totalPrice: (+state.totalPrice + currentItemPrice).toFixed(2),
+        totalItems: state.totalItems + 1,
+      }
+    }
+    case 'cart/DECREASE_ITEM_COUNT': {
+      const currentItem = state.items[action.payload]
+      const currentItemPrice = currentItem?.items[0].price
+      const currentIdItems = state.items[action.payload].items
+      if (currentIdItems.length === 1) return state
+      const newItems = currentIdItems.filter((item, idx) => idx !== currentIdItems.length - 1)
+      return {
+        items: {
+          ...state.items,
+          [action.payload]: {
+            items: newItems,
+            itemsTotalPrice: getItemTotalPrice(newItems).toFixed(2),
+          },
+        },
+        totalPrice: (+state.totalPrice - currentItemPrice).toFixed(2),
+        totalItems: state.totalItems - 1,
+      }
+    }
     default:
       return state
   }
@@ -44,10 +102,11 @@ export default (state = initialState, action: TActions): TInitialState => {
 type TActions = TInferActions<typeof actions>
 
 export const actions = {
-  addPizzaToCart: (payload: any) => ({ type: 'cart/ADD_PIZZA_TO_CART', payload } as const),
-  setTotalPrice: (payload: number) => ({ type: 'cart/SET_TOTAL_PRICE', payload } as const),
-  setPizzasInCartCount: (payload: number) =>
-    ({ type: 'cart/SET_PIZZAS_IN_CART_COUNT', payload } as const),
+  addPizzaToCart: (payload: TCartPizza) => ({ type: 'cart/ADD_PIZZA_TO_CART', payload } as const),
+  removeCartItem: (id: string) => ({ type: 'cart/REMOVE_CART_ITEM', payload: id } as const),
+  increaseItemCount: (id: string) => ({ type: 'cart/INCREASE_ITEM_COUNT', payload: id } as const),
+  decreaseItemCount: (id: string) => ({ type: 'cart/DECREASE_ITEM_COUNT', payload: id } as const),
+  cleanCart: () => ({ type: 'cart/CLEAR_CART' } as const),
 }
 
 type TThunk = TBaseThunk<TActions>
