@@ -67,40 +67,9 @@ const Cart = () => {
       dispatch(decreaseItemCount(id))
     },
     payNow: () => {
-      console.log('Payed')
-      // TODO: complete onPay method
-      //
-      // Swal.fire({
-      //   title: 'Submit your Github username',
-      //   text: `Total: ${totalPrice}`,
-      //   input: 'text',
-      //   inputAttributes: {
-      //     autocapitalize: 'off',
-      //   },
-      //   showCancelButton: true,
-      //   confirmButtonText: 'Look up',
-      //   showLoaderOnConfirm: true,
-      //   preConfirm: (login) => {
-      //     return fetch(`//api.github.com/users/${login}`)
-      //       .then((response) => {
-      //         if (!response.ok) {
-      //           throw new Error(response.statusText)
-      //         }
-      //         return response.json()
-      //       })
-      //       .catch((error) => {
-      //         Swal.showValidationMessage(`Request failed: ${error}`)
-      //       })
-      //   },
-      //   allowOutsideClick: () => !Swal.isLoading(),
-      // }).then((result) => {
-      //   if (result.value) {
-      //     Swal.fire({
-      //       title: `${result.value.login}'s avatar`,
-      //       imageUrl: result.value.avatar_url,
-      //     })
-      //   }
-      // })
+      Swal.fire({
+        title: 'Here may be a pay method',
+      })
     },
   }
 
