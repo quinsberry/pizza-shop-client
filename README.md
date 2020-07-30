@@ -2,7 +2,12 @@
 
 This is a client side of a website to order some pizzas. </br>
 </br>
-![Pizza-shop](https://user-images.githubusercontent.com/57848626/88336726-2f182780-cd3e-11ea-99b8-2880e63d5dd6.JPG)
+
+![Pizza shop main page](https://user-images.githubusercontent.com/57848626/88893939-c7873e00-d24f-11ea-9330-1257bcfcd0e2.JPG)
+
+</br>
+
+![Pizza shop Cart page](https://user-images.githubusercontent.com/57848626/88893995-dec62b80-d24f-11ea-8352-8cca2a888d73.JPG)
 
 ## Description
 
