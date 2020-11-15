@@ -9,7 +9,7 @@ This is a client side of a website to order some pizzas. </br>
 
 ## Description
 
-[Link to server side source code](https://github.com/quinsberry/pizza-shop-server)
+[Link to pizza shop](https://pizzas-shop.herokuapp.com/) | [Link to server code](https://github.com/quinsberry/pizza-shop-server) </br>
 </br>
 
 </br>
